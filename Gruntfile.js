@@ -30,10 +30,6 @@ module.exports = function(grunt) {
 
     bower:            require('camunda-commons-ui/grunt/config/bower')(config),
 
-    jasmine_node:     require('camunda-commons-ui/grunt/config/jasmine_node')(config),
-
-    karma:            require('camunda-commons-ui/grunt/config/karma')(config),
-
     requirejs:        require('./grunt/config/requirejs')(config),
 
     less:             require('camunda-commons-ui/grunt/config/less')(config),
@@ -47,8 +43,6 @@ module.exports = function(grunt) {
     jsdoc:            require('camunda-commons-ui/grunt/config/jsdoc')(config),
 
     jshint:           require('camunda-commons-ui/grunt/config/jshint')(config),
-
-    changelog:        require('camunda-commons-ui/grunt/config/changelog')(config),
 
     clean:            require('camunda-commons-ui/grunt/config/clean')(config)
   });
@@ -145,8 +139,6 @@ module.exports = function(grunt) {
     // 'connect',
     'watch'
   ]);
-
-  grunt.registerTask('prepublish', ['build', 'changelog']);
 
   grunt.registerTask('default', ['build']);
 };
