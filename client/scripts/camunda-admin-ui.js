@@ -2,24 +2,17 @@
 /* global define: false*/
 'use strict';
 define([
-  'angular',
-  'angular-route',
+  './pages/main',
+  './directives/main',
+  './filters/main',
+  './services/main',
+  './resources/main',
+  'camunda-commons-ui',
   'angular-resource',
   'angular-sanitize',
-  'angular-ui',
-  'ngDefine',
-  'jquery-ui-draggable'
-
-  // './directives/main',
-  // './filters/main',
-  // './pages/main',
-  // './resources/main',
-  // './services/main',
-  // 'camunda-commons-ui',
-  // 'angular-resource',
-  // 'angular-sanitize',
-  // 'angular-ui',
-  // 'ngDefine'
+  'angular-route',
+  'angular-bootstrap',
+  'ngDefine'
 ], function () {
   var APP_NAME = 'cam.admin';
 
@@ -66,7 +59,7 @@ define([
       $routeProvider,
       UriProvider
     ) {
-      $routeProvider.otherwise({ redirectTo: '/dashboard' });
+      $routeProvider.otherwise({ redirectTo: '/users' });
 
       function getUri(id) {
         var uri = $('base').attr(id);
@@ -77,18 +70,17 @@ define([
         return uri;
       }
 
-      UriProvider.replace(':appName', 'cockpit');
+      UriProvider.replace(':appName', 'admin');
       UriProvider.replace('app://', getUri('href'));
-      UriProvider.replace('adminbase://', getUri('app-root') + '/app/admin/');
-      UriProvider.replace('cockpit://', getUri('cockpit-api'));
-      UriProvider.replace('admin://', getUri('cockpit-api') + '../admin/');
-      UriProvider.replace('plugin://', getUri('cockpit-api') + 'plugin/');
+      UriProvider.replace('cockpitbase://', getUri('app-root') + '/app/cockpit/');
+      UriProvider.replace('admin://', getUri('admin-api'));
+      UriProvider.replace('plugin://', getUri('admin-api') + 'plugin/');
       UriProvider.replace('engine://', getUri('engine-api'));
 
       UriProvider.replace(':engine', [ '$window', function($window) {
         var uri = $window.location.href;
 
-        var match = uri.match(/\/app\/cockpit\/(\w+)(|\/)/);
+        var match = uri.match(/\/app\/admin\/(\w+)(|\/)/);
         if (match) {
           return match[1];
         } else {

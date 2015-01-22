@@ -1,21 +1,19 @@
-/* jshint node: true */
-'use strict';
-
 module.exports = function(config) {
+  'use strict';
   var grunt = config.grunt;
   var commons = require('camunda-commons-ui');
   var _ = commons.utils._;
   var rjsConf = commons.requirejs();
-
 
   var deps = [
     'requirejs',
     'angular-route',
     'angular-resource',
     'angular-sanitize',
-    'angular-ui',
+    // 'angular-ui',
+    'angular-bootstrap',
     'ngDefine',
-    'jquery-ui-draggable'
+    'domReady'
   ];
 
   var rConf = {
@@ -29,16 +27,38 @@ module.exports = function(config) {
       baseUrl: './<%= pkg.gruntConfig.clientDir %>',
 
       paths: _.extend(rjsConf.paths, {
-        // 'camunda-admin-ui': 'admin'
+        'admin':            'scripts',
+        'camunda-admin-ui': 'scripts/camunda-admin-ui'
       }),
 
-      shim: _.extend(rjsConf.shim, {}),
+      shim: _.extend(rjsConf.shim, {
+      }),
 
       packages: rjsConf.packages.concat([
         {
-          name: 'admin',
-          location: 'scripts',
-          main: 'admin'
+          name: 'services',
+          location: './scripts/services',
+        },
+        {
+          name: 'pages',
+          location: './scripts/pages',
+        },
+        {
+          name: 'directives',
+          location: './scripts/directives',
+        },
+        {
+          name: 'filters',
+          location: './scripts/filters',
+        },
+        {
+          name: 'resources',
+          location: './scripts/resources',
+        },
+        {
+          name: 'util',
+          location: './scripts/util',
+          main: 'routeUtil'
         }
       ])
     },
@@ -49,35 +69,18 @@ module.exports = function(config) {
         create: true,
         name: '<%= pkg.name %>-deps',
         out: '<%= buildTarget %>/scripts/deps.js',
-        include: deps.concat([
-          // 'camunda-cockpit-ui/require-conf'
-        ])
+        include: deps
       }
     },
 
     scripts: {
       options: {
-        name: 'admin',
+        name: '<%= pkg.name %>',
         out: '<%= buildTarget %>/scripts/<%= pkg.name %>.js',
-        exclude: deps.concat([
-          // 'camunda-cockpit-ui/require-conf'
-        ]),
-        include: ['admin'], //rjsConf.shim['camunda-cockpit-ui'],
+        exclude: deps,
+        include: [],
 
-        onModuleBundleComplete: function (data) {
-          var buildTarget = grunt.config('buildTarget');
-          var livereloadPort = grunt.config('pkg.gruntConfig.livereloadPort');
-          if (buildTarget !== 'dist' && livereloadPort) {
-            grunt.log.writeln('Enabling livereload for ' + data.name + ' on port: ' + livereloadPort);
-            var contents = grunt.file.read(data.path);
-
-            contents = contents
-                        .replace(/\/\* live-reload/, '/* live-reload */')
-                        .replace(/LIVERELOAD_PORT/g, livereloadPort);
-
-            grunt.file.write(data.path, contents);
-          }
-        }
+        onModuleBundleComplete: commons.livereloadSnippet(grunt)
       }
     }
   };
