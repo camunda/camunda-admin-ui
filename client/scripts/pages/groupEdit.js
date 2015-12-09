@@ -4,6 +4,7 @@ define(['angular', 'text!./groupEdit.html'], function(angular, template) {
   var Controller = [
     '$scope',
     '$routeParams',
+    'search',
     'GroupResource',
     'UserResource',
     'AuthorizationResource',
@@ -13,6 +14,7 @@ define(['angular', 'text!./groupEdit.html'], function(angular, template) {
   function (
     $scope,
     $routeParams,
+    search,
     GroupResource,
     UserResource,
     AuthorizationResource,
@@ -29,6 +31,8 @@ define(['angular', 'text!./groupEdit.html'], function(angular, template) {
 
     $scope.availableOperations = {};
     $scope.groupUserList = null;
+
+    var groupUserPages = $scope.groupUserPages = { size: 25, total: 0 };
 
     // common form validation //////////////////////////
 
@@ -53,15 +57,45 @@ define(['angular', 'text!./groupEdit.html'], function(angular, template) {
       });
     };
 
-    var loadGroupUsers = $scope.loadGroupUsers = function() {
+    $scope.$watch(function() {
+      return $location.search().tab === 'users' && parseInt(($location.search() || {}).page || '1');
+    }, function(newValue) {
+      if (newValue) {
+        groupUserPages.current = newValue;
+        updateGroupUserView();
+      }
+    });
+
+    $scope.pageChange = function(page) {
+      search.updateSilently({ page: !page || page == 1 ? null : page });
+    };
+
+    function updateGroupUserView() {
+      var page = groupUserPages.current,
+          count = groupUserPages.size,
+          firstResult = (page - 1) * count;
+
+      var searchParams = {
+        memberOfGroup : $scope.encodedGroupId
+      };
+
+      var pagingParams = {
+        firstResult: firstResult,
+        maxResults: count
+      };
+
       $scope.userLoadingState = 'LOADING';
-      UserResource.query({'memberOfGroup' : $scope.encodedGroupId}).$promise.then(function(response) {
+      UserResource.query(angular.extend({}, searchParams, pagingParams)).$promise.then(function(response) {
         $scope.groupUserList = response;
         $scope.userLoadingState = response.length ? 'LOADED' : 'EMPTY';
-      }, function () {
+      }, function() {
         $scope.userLoadingState = 'ERROR';
       });
-    };
+
+      UserResource.count(searchParams).$promise.then(function(response) {
+        groupUserPages.total = response.count;
+      });
+    }
 
     GroupResource.OPTIONS({groupId : $scope.encodedGroupId}).$promise.then(function(response) {
       // angular.forEach(response.data.links, function(link){
@@ -127,7 +161,6 @@ define(['angular', 'text!./groupEdit.html'], function(angular, template) {
     // initialization ///////////////////////////////////
 
     loadGroup();
-    loadGroupUsers();
 
     if(!$location.search().tab) {
       $location.search({'tab': 'group'});
