@@ -7,20 +7,21 @@ define('camunda-admin-bootstrap', [
   var pluginDependencies = window.PLUGIN_DEPENDENCIES || [];
 
   require.config({
-    packages: pluginPackages
+    packages: pluginPackages,
+    baseUrl: '../'
   });
 
   var dependencies = ['./scripts/camunda-admin-ui'].concat(pluginDependencies.map(function(plugin) {
     return plugin.requirePackageName;
   }));
 
-  console.log('these are my dependencies', dependencies);
-
   require(dependencies, function(camundaAdminUi) {
-    console.log(camundaAdminUi);
     camundaAdminUi(pluginDependencies);
-
   });
+});
+
+require.config({
+  baseUrl: '../../../lib'
 });
 
 require(['camunda-admin-bootstrap'], function(){});
