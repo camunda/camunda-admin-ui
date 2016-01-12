@@ -1,6 +1,5 @@
 'use strict';
 
-
 var pagesModule = require('./pages/main'),
     directivesModule = require('./directives/main'),
     filtersModule = require('./filters/main'),
@@ -111,4 +110,9 @@ var pagesModule = require('./pages/main'),
         window.parent.postMessage({ type: 'loadamd' }, '*');
       }
     });
+
+      /* live-reload
+      // loads livereload client library (without breaking other scripts execution)
+      $('body').append('<script src="//' + location.hostname + ':LIVERELOAD_PORT/livereload.js?snipver=1"></script>');
+      /* */
   };
