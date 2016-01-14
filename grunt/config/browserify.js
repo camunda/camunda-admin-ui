@@ -19,10 +19,6 @@ module.exports = function(config, browserifyConfig) {
       ],
       postBundleCB: function(err, src, next) {
 
-        console.log(typeof src);
-
-        console.log('bundle is complete', err);
-
         var buildMode = config.grunt.config('buildMode');
         var livereloadPort = config.grunt.config('pkg.gruntConfig.livereloadPort');
         if (buildMode !== 'prod' && livereloadPort) {
