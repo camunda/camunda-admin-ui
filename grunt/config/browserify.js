@@ -7,16 +7,6 @@ module.exports = function(config, browserifyConfig) {
         standalone: 'CamundaAdminUi'
       },
       watch: true,
-      transform: [
-        [ 'exposify',
-          {
-            expose: {
-             // do not embed angular, instead, use window.angular
-             'angular': 'angular',
-            }
-          }
-        ]
-      ],
       postBundleCB: function(err, src, next) {
 
         var buildMode = config.grunt.config('buildMode');

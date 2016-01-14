@@ -6,6 +6,7 @@ var pagesModule = require('./pages/main'),
     servicesModule = require('./services/main'),
     resourcesModule = require('./resources/main'),
     camCommonsUi = require('camunda-commons-ui/lib'),
+    sdk = require('camunda-bpm-sdk-js/lib/angularjs/index'),
     angular = require('angular'),
     $ = require('jquery');
 
@@ -115,4 +116,10 @@ var pagesModule = require('./pages/main'),
       // loads livereload client library (without breaking other scripts execution)
       $('body').append('<script src="//' + location.hostname + ':LIVERELOAD_PORT/livereload.js?snipver=1"></script>');
       /* */
+  };
+
+  module.exports.exposePackages = function(requirePackages) {
+    requirePackages.angular = angular;
+    requirePackages['camunda-commons-ui'] = camCommonsUi;
+    requirePackages['camunda-bpm-sdk-js'] = sdk;
   };
