@@ -29,7 +29,9 @@ define('camunda-admin-bootstrap', [
     }));
 
     require(dependencies, function() {
-      camundaAdminUi(pluginDependencies);
+      require([],function() {
+        camundaAdminUi(pluginDependencies);
+      });
     });
 
   });
