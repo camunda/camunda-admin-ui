@@ -4,7 +4,8 @@ module.exports = function(config, browserifyConfig) {
   browserifyConfig.admin_scripts = {
     options: {
       browserifyOptions: {
-        standalone: 'CamundaAdminUi'
+        standalone: 'CamundaAdminUi',
+        debug: true
       },
       watch: true,
       postBundleCB: function(err, src, next) {
