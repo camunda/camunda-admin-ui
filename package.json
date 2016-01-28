@@ -1,6 +1,6 @@
 {
   "name": "camunda-admin-ui",
-  "version": "7.5.0-alpha1",
+  "version": "7.5.0-SNAPSHOT",
   "private": true,
   "gruntConfig": {
     "connectPort": 8020,
@@ -19,8 +19,8 @@
     "angular-route": "1.2.29",
     "jquery": "2.1.1",
     "requirejs": "2.1.22",
-    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#7.5.0-alpha1",
-    "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js#7.5.0-alpha1"
+    "camunda-commons-ui": "git://github.com/camunda/camunda-commons-ui#master",
+    "camunda-bpm-sdk-js": "git://github.com/camunda/camunda-bpm-sdk-js#master"
   },
   "devDependencies": {
     "brfs": "^1.4.2"
