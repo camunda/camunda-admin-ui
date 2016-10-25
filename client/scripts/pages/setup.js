@@ -2,7 +2,7 @@ define(['text!./setup.html'], function(template) {
   'use strict';
   var Controller = ['$scope', 'InitialUserResource', 'Notifications', '$location', 'Uri', function ($scope, InitialUserResource, Notifications, $location, Uri) {
 
-    if (!/.*\/app\/admin\/(\w+)\/setup\/.*/.test($location.absUrl())) {
+    if (!/.*\/app\/admin\/([a-zA-Z0-9-]+)\/setup\/.*/.test($location.absUrl())) {
       $location.path("/");
       return;
     }
